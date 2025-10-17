@@ -3,18 +3,21 @@ package model;
 import java.util.HashMap;
 import java.util.Map;
 
+import enums.estadoPedido;
 import exceptions.StockInsuficienteException;
 
 public class Pedido {
 
     private final int ID_PEDIDO;
     private Map<Integer, Producto> listaProductos;
+    private estadoPedido estado;
 
     private static int ID_CONTADOR = 0;
 
     public Pedido() {
         ID_CONTADOR++;
         this.ID_PEDIDO = ID_CONTADOR;
+        this.estado = estadoPedido.PENDIENTE;
         this.listaProductos = new HashMap<Integer, Producto>();
     }
 
@@ -50,8 +53,16 @@ public class Pedido {
         return this.listaProductos.size();
     }
 
+    public estadoPedido getEstado() {
+        return this.estado;
+    }
+
+    public void setEstado(estadoPedido estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
-        return "--------------------\n" + "ID PEDIDO: " + this.getId() + "\n" + "Cantidad productos: " + this.getListaProductosSize() + "\n--------------------";
+        return "--------------------\n" + "ID PEDIDO: " + this.getId() + "\n" + "Estado de pedido: " + this.getEstado() + "\n" + "Cantidad productos: " + this.getListaProductosSize() + "\n--------------------";
     }
 }
