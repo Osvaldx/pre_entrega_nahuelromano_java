@@ -1,8 +1,6 @@
 package model;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import enums.estadoPedido;
 import exceptions.StockInsuficienteException;
@@ -10,7 +8,7 @@ import exceptions.StockInsuficienteException;
 public class Pedido {
 
     private final int ID_PEDIDO;
-    private Map<Integer, Producto> listaProductos;
+    private ArrayList<Producto> listaProductos;
     private estadoPedido estado;
 
     private static int ID_CONTADOR = 0;
@@ -19,12 +17,12 @@ public class Pedido {
         ID_CONTADOR++;
         this.ID_PEDIDO = ID_CONTADOR;
         this.estado = estadoPedido.PENDIENTE;
-        this.listaProductos = new HashMap<Integer, Producto>();
+        this.listaProductos = new ArrayList<Producto>();
     }
 
     public void agregarProducto(Producto producto) {
         if(producto.getCantidad() > 0) {
-            this.listaProductos.put(producto.getId(), producto);
+            this.listaProductos.add(producto);
             producto.setCantidad(producto.getCantidad() - 1);
             System.out.println("[+] Se AGREGO el producto con el ID: " + producto.getId() + " del pedido ID: " + this.getId());
         } else {
@@ -34,8 +32,8 @@ public class Pedido {
     
     public void eliminarProducto(Producto producto) {
         if(this.getListaProductosSize() > 0) {
-            if(this.listaProductos.containsValue(producto)) {
-                this.listaProductos.remove(producto.getId(), producto);
+            if(this.listaProductos.contains(producto)) {
+                this.listaProductos.remove(producto);
                 producto.setCantidad(producto.getCantidad() + 1);
                 System.out.println("[!] Se ELIMINO el producto con el ID: " + producto.getId() + " del pedido ID: " + this.getId());
             } else {
@@ -50,8 +48,8 @@ public class Pedido {
         return this.ID_PEDIDO;
     }
 
-    public Collection<Producto> getListaProductos() {
-        return this.listaProductos.values();
+    public ArrayList<Producto> getListaProductos() {
+        return this.listaProductos;
     }
 
     public int getListaProductosSize() {
