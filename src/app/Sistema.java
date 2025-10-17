@@ -25,8 +25,7 @@ public class Sistema {
                     - [3] Buscar / Actualizar producto
                     - [4] Eliminar producto
                     - [5] Gestionar pedidos
-                    - [6] Listar pedidos
-                    - [7] Salir
+                    - [6] Salir
                     """);
 
             int opcion = InputHelper.leerInt("Ingrese una opción: ");
@@ -37,8 +36,7 @@ public class Sistema {
                 case 3 -> productoService.editar();
                 case 4 -> productoService.eliminar();
                 case 5 -> pedidoService.mostrarMenuPedido();
-                case 6 -> pedidoService.listar();
-                case 7 -> continuar = false;
+                case 6 -> continuar = false;
                 default -> System.out.println("[!] Opción invalida, intente nuevamente");
             }
         } while(continuar);
