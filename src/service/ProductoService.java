@@ -3,12 +3,13 @@ package service;
 import java.util.ArrayList;
 
 import enums.tipoProducto;
+import interfaces.ICrud;
 import model.Bebida;
 import model.Comida;
 import model.Producto;
 import utils.InputHelper;
 
-public class ProductoService {
+public class ProductoService implements ICrud<Producto> {
 
     private final ArrayList<Producto> productos;
 
@@ -16,12 +17,13 @@ public class ProductoService {
         this.productos = productos;
     }
 
-    public void agregarProducto() {
+    @Override
+    public void crear() {
         tipoProducto tipo = null;
 
         System.out.println("""
-                - [1] Agregar Bebida
-                - [2] Agregar Comida
+                - [1] Crear Bebida
+                - [2] Crear Comida
                 - [3] Salir
                 """);
         
@@ -67,7 +69,8 @@ public class ProductoService {
         }
     }
 
-    public void listarProductos() {
+    @Override
+    public void listar() {
         if(this.productos.isEmpty()) {
             System.out.println("[!] No hay productos disponibles");
             return;
@@ -77,17 +80,15 @@ public class ProductoService {
         this.productos.forEach(p -> System.out.println(p.toString()));
     }
 
-    public void buscarYEditarProducto() {
+    @Override
+    public void editar() {
         if(this.productos.isEmpty()) { System.out.println("[!] No hay productos en este momento"); return; };
 
         Producto p = this.buscarProductoPorID();
         
-        if(p == null) {
-            System.out.println("[!] No existe producto con ese ID");
-            return;
-        } else {
-            System.out.println(p.toString());
-        }
+        if(p == null) { return; };
+        
+        System.out.println(p.toString());
 
         String opcionEditar;
         do {
@@ -140,15 +141,20 @@ public class ProductoService {
     public Producto buscarProductoPorID() {
         int idProducto = InputHelper.leerInt("Ingrese el ID del producto a buscar: ");
         
-        return this.productos.stream()
-                .filter(p -> p.getId() == idProducto)
-                .findFirst()
-                .orElse(null);
+        Producto producto = this.productos.stream()
+                                        .filter(p -> p.getId() == idProducto)
+                                        .findFirst()
+                                        .orElse(null);
+        
+        if(producto == null) { System.out.println("[!] No existe producto con ese ID"); }
+
+        return producto;
     }
 
-    public void eliminarProducto() {
+    @Override
+    public void eliminar() {
         Producto p = this.buscarProductoPorID();
-        if(p == null) { System.out.println("[!] No hay producto con ese ID"); return; };
+        if(p == null) { return; };
 
         this.productos.remove(p);
         System.out.println("[+] Producto ID: " + p.getId() + " eliminado con exito!");
