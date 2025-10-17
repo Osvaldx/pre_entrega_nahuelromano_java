@@ -20,7 +20,7 @@ public class Sistema {
 
         do {
             System.out.println("""
-                    - [1] Agregar producto
+                    - [1] Crear producto
                     - [2] Listar productos
                     - [3] Buscar / Actualizar producto
                     - [4] Eliminar producto
@@ -32,12 +32,12 @@ public class Sistema {
             int opcion = InputHelper.leerInt("Ingrese una opción: ");
 
             switch (opcion) {
-                case 1 -> productoService.agregarProducto();
-                case 2 -> productoService.listarProductos();
-                case 3 -> productoService.buscarYEditarProducto();
-                case 4 -> productoService.eliminarProducto();
+                case 1 -> productoService.crear();
+                case 2 -> productoService.listar();
+                case 3 -> productoService.editar();
+                case 4 -> productoService.eliminar();
                 case 5 -> pedidoService.mostrarMenuPedido();
-                case 6 -> pedidoService.listarPedidos();
+                case 6 -> pedidoService.listar();
                 case 7 -> continuar = false;
                 default -> System.out.println("[!] Opción invalida, intente nuevamente");
             }
