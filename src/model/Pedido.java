@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +48,10 @@ public class Pedido {
 
     public int getId() {
         return this.ID_PEDIDO;
+    }
+
+    public Collection<Producto> getListaProductos() {
+        return this.listaProductos.values();
     }
 
     public int getListaProductosSize() {
