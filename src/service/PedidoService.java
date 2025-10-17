@@ -21,21 +21,54 @@ public class PedidoService implements ICrud<Pedido> {
     public void mostrarMenuPedido() {
         System.out.println("""
                 - [1] Crear pedido
-                - [2] Agregar producto a pedido (ID)
-                - [3] Eliminar producto de pedido (ID)
-                - [4] Editar estado de pedido (ID)
-                - [5] Salir
+                - [2] Listar pedidos
+                - [3] Editar pedido (ID)
+                - [4] Eliminar pedido (ID)
+                - [5] Gestionar productos del pedido (ID)
+                - [6] Salir
                 """);
         int opcion = InputHelper.leerInt("Ingrese una opción: ");
 
         switch(opcion) {
             case 1 -> this.crear();
-            case 2 -> this.agregarProductoPedido();
-            case 3 -> this.eliminar();
-            case 4 -> this.editar();
-            case 5 -> { return; }
+            case 2 -> this.listar();
+            case 3 -> this.editar();
+            case 4 -> this.eliminar();
+            case 5 -> this.mostrarMenuGestionProductos();
+            case 6 -> { return; }
             default -> { System.out.println("[!] Opción invalida"); return; }
         }
+    }
+
+    private void mostrarMenuGestionProductos() {
+        System.out.println("""
+                - [1] Agregar producto a pedido (ID)
+                - [2] Eliminar producto de pedido (ID)
+                - [3] Listar productos del pedido (ID)
+                - [4] Salir
+                """);
+
+        int opcion = InputHelper.leerInt("Ingrese una opción: ");
+        switch (opcion) {
+            case 1 -> this.agregarProductoPedido();
+            case 2 -> this.eliminarProductoDePedido();
+            case 3 -> this.listarProductosDePedido();
+            case 4 -> { return; }
+            default -> { System.out.println("[!] Opción invalida"); return; }
+        }
+    }
+
+    private void listarProductosDePedido() {
+        Pedido pedido = this.buscarPedidoPorID();
+        if(pedido == null) { return; }
+        
+        if(pedido.getListaProductosSize() == 0) {
+            System.out.println("[!] No hay productos en este pedido");
+            return;
+        }
+        
+        System.out.println("--| LISTA DE PRODUCTOS |--");
+        pedido.getListaProductos().forEach(p -> System.out.println(p.toString()));
     }
 
     @Override
@@ -90,6 +123,15 @@ public class PedidoService implements ICrud<Pedido> {
     
     @Override
     public void eliminar() {
+        System.out.println("[!] Busque el PEDIDO que quiere eliminar");
+        Pedido pedido = this.buscarPedidoPorID();
+        if(pedido == null) { return; }
+
+        this.pedidos.remove(pedido);
+        System.out.println("[+] Pedido eliminado con exito");
+    }
+
+    private void eliminarProductoDePedido() {
         System.out.println("[!] Busque el PEDIDO que quiere eliminarle un PRODUCTO");
         Pedido pedido = this.buscarPedidoPorID();
         if(pedido == null) { return; }
